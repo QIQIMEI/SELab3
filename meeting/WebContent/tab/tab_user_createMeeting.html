@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title>查看个人日程</title>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+.STYLE1 {font-size: 12px}
+.STYLE3 {font-size: 12px; font-weight: bold; }
+.STYLE4 {
+	color: #03515d;
+	font-size: 12px;
+}
+
+.fabu{
+    margin-top: 20px;
+    margin-right: 10px;
+    float: right;
+    background-color: #00BCD4;
+    height: 30px;
+}
+.modal-wrapper{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px ;
+    left : 0px;
+    background-color: #FFF;
+    filter: alpha(opacity = 70);
+    opacity: 0.7;
+    z-index: -1;
+}
+
+
+.modal-dialog{
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin:-150px 0 0 -200px;
+    width:400px;
+    height:350px;
+    border:1px solid #00BCD4;
+    background-color: #FFF;
+    z-index: 65535;
+    display: none;
+}
+
+.modal-dialog2{
+    position:absolute;
+    top:50%;
+    left:50%;
+    margin:-150px 0 0 -200px;
+    width:400px;
+    height:230px;
+    border:1px solid #00BCD4;
+    background-color: #FFF;
+    z-index: 65535;
+    display: none;
+}
+
+.modal-title{
+    position: relative;
+    background-color: #00BCD4;
+    background-image: -webkit-linear-gradient(top,#00BCD4,#00BCD4);
+    padding: 10px 15px;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid #0D6EB8;
+    box-shadow: 0 1px 0 rgba(255,255,255,.1) inset,0 1px 1px rgba(0,0,0,.2);
+    margin: -1px -1px 0;
+    line-height: 14px;
+}
+.modal-dialog-content{
+  background-color: #FFF;
+}
+.modal-dialog-title-text{
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.modal-dialog-title-close{
+    position: absolute;
+    top: 50%;
+    right: 3px;
+    width: 30px;
+    height: 30px;
+    margin-top: -15px;
+    cursor: pointer;
+}
+
+.modal-dialog-title-close img{
+    height: 30px;
+    width: 30px;
+}
+-->
+</style>
+
+
+
+
+<script src="../lib/jquery-2.1.3.min.js"></script>
+<script src="../js/user.js"></script>
+<script>
+var  highlightcolor='#c1ebff';
+var  clickcolor='#51b2f6';
+function  changeto(){
+source=event.srcElement;
+if  (source.tagName=="TR"||source.tagName=="TABLE")
+return;
+while(source.tagName!="TD")
+source=source.parentElement;
+source=source.parentElement;
+cs  =  source.children;
+//alert(cs.length);
+//console.log(cs[1].style);
+if (cs[1] == undefined)
+return;
+if  (cs[1].style.backgroundColor!=highlightcolor&&source.id!="nc"&&cs[1].style.backgroundColor!=clickcolor)
+for(i=0;i<cs.length;i++){
+  cs[i].style.backgroundColor=highlightcolor;
+}
+
+}
+
+
+function  changeback(){
+if  (event.fromElement.contains(event.toElement)||source.contains(event.toElement)||source.id=="nc")
+return;
+if (cs[1] == undefined)
+return;
+if  (event.toElement!=source&&cs[1].style.backgroundColor!=clickcolor)
+//source.style.backgroundColor=originalcolor
+for(i=0;i<cs.length;i++){
+  cs[i].style.backgroundColor="";
+}
+}
+
+function  clickto(){
+source=event.srcElement;
+if  (source.tagName=="TR"||source.tagName=="TABLE")
+return;
+while(source.tagName!="TD")
+source=source.parentElement;
+source=source.parentElement;
+cs  =  source.children;
+//alert(cs.length);
+if  (cs[1].style.backgroundColor!=clickcolor&&source.id!="nc")
+for(i=0;i<cs.length;i++){
+  cs[i].style.backgroundColor=clickcolor;
+}
+else
+for(i=0;i<cs.length;i++){
+  cs[i].style.backgroundColor="";
+}
+}
+
+//按钮操作
+function editButton(ob){
+
+  var name=$(ob).attr("class");
+  console.log(name);
+  if (ob.value == "确认"){
+    var missionID = $("#"+name+"_missionID").html();
+    toConfirm(missionID);
+    ob.value = "提交出差记录";
+    $("span."+name+"_state").html("进行中");
+  }
+  else if (ob.value == "提交出差记录"){
+    askq();
+    ob.value = "任务顺利完成";
+    $("span."+name+"_state").html("已结束");
+  }
+  
+}
+
+</script>
+
+</head>
+
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td height="30" background="images/tab_05.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="12" height="30"><img src="images/tab_03.gif" width="12" height="30" /></td>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="46%" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="5%"><div align="center"><img src="images/tb.gif" width="16" height="16" /></div></td>
+                <td width="95%" class="STYLE1"><span class="STYLE3">你当前的位置：</span>[会议管理]-[发起会议]</td>
+              </tr>
+            </table></td>
+            <td width="54%"><table border="0" align="right" cellpadding="0" cellspacing="0">
+            </table></td>
+          </tr>
+        </table></td>
+        <td width="16"><img src="images/tab_07.gif" width="16" height="30" /></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="8" background="images/tab_12.gif">&nbsp;</td>
+        <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="b5d6e6" onmouseover="changeto()"  onmouseout="changeback()">
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="5">
+              <span font-size="30">请输入会议时间范围和持续时间，会议内容，系统将推荐会议人员</span>
+            </td>
+          </tr>
+          <tr>
+            <td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">范围起始时间</span></div></td>
+            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">范围结束时间</span></div></td>
+            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议持续时间(分钟)</span></div></td>
+            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议内容</span></div></td>
+            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF" class="STYLE1"><div align="center">基本操作</div></td>
+          </tr>
+          <tr>
+            <!-- <td height="20" bgcolor="#FFFFFF"><div align="center">
+              <input type="checkbox" name="checkbox4" value="checkbox" />
+            </div></td> -->
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-6-20 15:00:00</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-6-20 22:00:00</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">40</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">与马云爸爸面对面</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button>推荐人员</button></span></div></td>
+          </tr>
+          <tr>
+            <!-- <td height="20" bgcolor="#FFFFFF"><div align="center">
+              <input type="checkbox" name="checkbox4" value="checkbox" />
+            </div></td> -->
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button>推荐人员</button></span></div></td>
+          </tr>
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="5">
+              <span font-size="30">&nbsp</span>
+            </td>
+          </tr>
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="5">
+              <span font-size="30">请勾选必须参加会议的人员</span>
+            </td>
+          </tr>
+          <tr>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+          </tr>
+
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="5">
+              <span font-size="30">&nbsp</span>
+            </td>
+          </tr>
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="5">
+              <span font-size="30">请勾选推荐参加会议的人员</span>
+            </td>
+          </tr>
+          <tr>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
+          </tr>
+
+           <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="5">
+              <span font-size="30">&nbsp</span>
+            </td>
+          </tr>
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="4">
+              <span font-size="30">点击按钮，系统将根据你的选择为你制定会议</span>
+            </td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button>制定会议</button></span></div></td>
+          </tr>
+          <tr>
+            <td height="30" bgcolor="#FFFFFF" colspan="1">
+              <span font-size="30">会议定制结果：</span>
+            </td>
+            <td height="20" bgcolor="#FFFFFF" colspan="4"><div align="center"><span class="STYLE4">会议主题：与马云爸爸面对面 起始时间：2016-06-26 13:00:00 持续时间：40分钟 地点：会议室1 参与人数：13人</span></div></td>
+          </tr>
+        </table></td>
+        <td width="8" background="images/tab_15.gif">&nbsp;</td>
+      </tr>
+    </table></td>
+  </tr>
+  
+</table>
+</body>
+</html>
