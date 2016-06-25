@@ -118,6 +118,9 @@ source=source.parentElement;
 source=source.parentElement;
 cs  =  source.children;
 //alert(cs.length);
+//console.log(cs[1].style);
+if (cs[1] == undefined)
+return;
 if  (cs[1].style.backgroundColor!=highlightcolor&&source.id!="nc"&&cs[1].style.backgroundColor!=clickcolor)
 for(i=0;i<cs.length;i++){
   cs[i].style.backgroundColor=highlightcolor;
@@ -128,7 +131,9 @@ for(i=0;i<cs.length;i++){
 
 function  changeback(){
 if  (event.fromElement.contains(event.toElement)||source.contains(event.toElement)||source.id=="nc")
-return
+return;
+if (cs[1] == undefined)
+return;
 if  (event.toElement!=source&&cs[1].style.backgroundColor!=clickcolor)
 //source.style.backgroundColor=originalcolor
 for(i=0;i<cs.length;i++){
