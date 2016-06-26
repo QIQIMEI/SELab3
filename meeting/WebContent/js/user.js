@@ -515,13 +515,141 @@ function toAddQueryNotice(noticeID,noticeTime,noticeType,c){
 //查看用户的会议
 function getMyMeeting(){
     $.ajax( {
-        url:'/GetMyMeetingServlet',
+        url:'../GetMyMeetingServlet',
         data:{
-        	userID : userID
+        	userID : window.sessionStorage.userIDStatic
         },
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//返回一个JSONObject，2代表用户发起的会议列表，1代表用户参加的会议列表，0代表用户未参加的会议列表，每个会议包括meetingID,beginTime,place,content,duration,meetingType(会议状态0：已取消；1：未推送；2：已推送)
+            var c = document.createElement('tr');
+            var contain = "";
+            contain='<td height="30" bgcolor="#FFFFFF" colspan="6"><span font-size="30">我发起的会议</span></td>';
+            c.innerHTML=contain;
+            var projectTable = document.getElementById("queryMyMeetingTable");
+            projectTable.appendChild(c);
+
+            c = document.createElement('tr');
+            contain='<td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议编号</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议内容</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">时间</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">地点</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">当前状态</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF" class="STYLE1"><div align="center">基本操作</div></td>'
+            c.innerHTML=contain;
+            projectTable = document.getElementById("queryMyMeetingTable");
+            projectTable.appendChild(c);
+
+
+            for(var j=0; j<data[2].length; j++){
+                var meetingID = data[2][j].meetingID;
+                var beginTime = data[2][j].beginTime;
+                var place = data[2][j].place;
+                var content = data[2][j].content;
+                var meetingType = data[2][j].meetingType;
+                var mtype = '';
+                switch(meetingType){
+                    case 2: 
+                        mtype = "已推送";
+                        break;
+                    case 1: 
+                        mtype = "未推送";
+                        break;
+                    case 0: 
+                        mtype = "已取消";
+                        break;
+                }
+                c = document.createElement('tr');
+                contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
+                '</div></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+content+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+beginTime+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+place+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+mtype+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4">';
+                if(meetingType > 0){
+                    contain+='<img src="images/del.gif" width="16" height="16" /><button>取消会议</button></span></div></td>';
+                }            
+                else{
+                    contain+='</span></div></td>'
+                }
+                c.innerHTML=contain;
+                projectTable = document.getElementById("queryMyMeetingTable");
+                projectTable.appendChild(c);
+            }
+
+            c = document.createElement('tr');
+            contain='<td height="30" bgcolor="#FFFFFF" colspan="6"><span font-size="30">我参与的会议</span></td>';
+            c.innerHTML=contain;
+            var projectTable = document.getElementById("queryMyMeetingTable");
+            projectTable.appendChild(c);
+              
+            c = document.createElement('tr');
+            contain='<td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议编号</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议内容</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">时间</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">地点</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">当前状态</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF" class="STYLE1"><div align="center">基本操作</div></td>'
+            c.innerHTML=contain;
+            projectTable = document.getElementById("queryMyMeetingTable");
+            projectTable.appendChild(c);
+
+            for(var j=0; j<data[1].length; j++){
+                var meetingID = data[1][j].meetingID;
+                var beginTime = data[1][j].beginTime;
+                var place = data[1][j].place;
+                var content = data[1][j].content;
+                var meetingType = data[1][j].meetingType;
+                
+                c = document.createElement('tr');
+                contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
+                '</div></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+content+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+beginTime+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+place+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+'已确认'+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4">';
+                contain+='</span></div></td>'
+                c.innerHTML=contain;
+                projectTable = document.getElementById("queryMyMeetingTable");
+                projectTable.appendChild(c);
+            }
+            
+            c = document.createElement('tr');
+            contain='<td height="30" bgcolor="#FFFFFF" colspan="6"><span font-size="30">推荐我参与的会议</span></td>';
+            c.innerHTML=contain;
+            var projectTable = document.getElementById("queryMyMeetingTable");
+            projectTable.appendChild(c);
+              
+            c = document.createElement('tr');
+            contain='<td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议编号</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议内容</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">时间</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">地点</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">当前状态</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF" class="STYLE1"><div align="center">基本操作</div></td>'
+            c.innerHTML=contain;
+            projectTable = document.getElementById("queryMyMeetingTable");
+            projectTable.appendChild(c);
+
+            for(var j=0; j<data[1].length; j++){
+                var meetingID = data[1][j].meetingID;
+                var beginTime = data[1][j].beginTime;
+                var place = data[1][j].place;
+                var content = data[1][j].content;
+                var meetingType = data[1][j].meetingType;
+                
+                c = document.createElement('tr');
+                contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
+                '</div></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+content+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+beginTime+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+place+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+'未参加'+
+                '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4">';
+                contain+='<img src="images/edt.gif" width="16" height="16" /><button>参加会议</button></span></div></td>'
+                c.innerHTML=contain;
+                projectTable = document.getElementById("queryMyMeetingTable");
+                projectTable.appendChild(c);
+            }
 
         }
     });
