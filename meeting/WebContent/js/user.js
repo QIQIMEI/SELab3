@@ -413,6 +413,11 @@ function login(){
         cache:false, dataType:'json',
         success:function(data) {//返回JSONObject包括userID、username
             console.log(data);
+            if(data.userID == "error"){
+                alert("用户名或密码错误");
+            }else{
+                window.location.href = "main_user.html";
+            }
         }
     });
 }

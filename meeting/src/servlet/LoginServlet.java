@@ -69,7 +69,16 @@ public class LoginServlet extends HttpServlet {
 				} 
 				out.append(jsobj.toString());
 			} else {
-				out.append("�û������������");
+				JSONObject jsobj = new JSONObject();
+				try {
+					jsobj.append("userID", "error");
+				    jsobj.append("username", "error");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				out.append(jsobj.toString());
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
