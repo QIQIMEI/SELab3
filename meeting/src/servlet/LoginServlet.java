@@ -17,10 +17,8 @@ import dao.Dao;
 
 /**
  * Servlet implementation class LoginServlet
- * @param <HttpServletRequest>
- * @param <HttpServletResponse>
  */
-@WebServlet("/login")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -37,7 +35,6 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		this.doPost(request, response);
 	}
 
 	/**
@@ -46,9 +43,10 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		//获取数据
+		System.out.println("123123123");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		
+		System.out.println(username);
 		Dao dao = Dao.getInstance();
 		User user = null;
 		user = dao.login(username, password);
