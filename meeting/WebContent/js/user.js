@@ -558,7 +558,7 @@ function getMyMeeting(){
                 '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+meetingType+
                 '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4">';
                 if(meetingType != "已取消"){
-                    contain+='<img src="images/del.gif" width="16" height="16" /><button>取消会议</button></span></div></td>';
+                    contain+='<img src="images/del.gif" width="16" height="16" /><button onclick="cancelMeeting('+meetingID+')">取消会议</button></span></div></td>';
                 }            
                 else{
                     contain+='</span></div></td>'
@@ -636,7 +636,7 @@ function getMyMeeting(){
                 '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+place+
                 '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+'未参加'+
                 '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4">';
-                contain+='<img src="images/edt.gif" width="16" height="16" /><button>参加会议</button></span></div></td>'
+                contain+='<img src="images/edt.gif" width="16" height="16" /><button onclick="attendMeeting('+meetingID+')">参加会议</button></span></div></td>'
                 c.innerHTML=contain;
                 projectTable = document.getElementById("queryMyMeetingTable");
                 projectTable.appendChild(c);
@@ -647,32 +647,32 @@ function getMyMeeting(){
 }
 
 //点击“我发起的会议”中“取消会议”按钮
-function cancelMeeting(){
+function cancelMeeting(meetingID){
     $.ajax( {
-        url:'/CancelMeetingServlet',
+        url:'../CancelMeetingServlet',
         data:{
         	meetingID : meetingID
         },
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//无返回信息
-
+            getMyMeeting();
         }
     });
 }
 
 //点击“推荐我参与的会议”中“参加会议”按钮
-function attendMeeting(){
+function attendMeeting(meetingID){
     $.ajax( {
-        url:'/AttendMeetingServlet',
+        url:'../AttendMeetingServlet',
         data:{
-        	userID : userID,
+        	userID : window.sessionStorage.userIDStatic,
         	meetingID : meetingID
         },
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//无返回信息
-
+            getMyMeeting();
         }
     });
 }
