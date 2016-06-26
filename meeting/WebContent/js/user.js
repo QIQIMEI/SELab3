@@ -190,6 +190,7 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
     content.innerHTML=contain;
     var projectTable = document.getElementById("queryProjectTable");
     projectTable.appendChild(content);
+}
 /**
  * Created by Chuanhao on 2015/12/23.
  */
@@ -419,3 +420,34 @@ function login(){
         }
     });
 }
+
+//查看用户日程
+function getSchedule(){
+    $.ajax( {
+        url:'/GetScheduleServlet',
+        data:{
+        	userID : userID
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//返回一个JSONArray，每个对象包括meetingID,beginTime,place,content,duration
+
+        }
+    });
+}
+
+//查看用户的会议
+function getMyMeeting(){
+    $.ajax( {
+        url:'/GetMyMeetingServlet',
+        data:{
+        	userID : userID
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//返回一个JSONObject，2代表用户发起的会议列表，1代表用户必须参加的会议列表，0代表用户不必须参加的会议列表，每个会议包括meetingID,beginTime,place,content,duration
+
+        }
+    });
+}
+
