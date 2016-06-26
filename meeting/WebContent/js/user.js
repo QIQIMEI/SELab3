@@ -656,9 +656,10 @@ function cancelMeeting(meetingID){
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//无返回信息
-            getMyMeeting();
+            
         }
     });
+    getMyMeeting();
 }
 
 //点击“推荐我参与的会议”中“参加会议”按钮
@@ -672,7 +673,50 @@ function attendMeeting(meetingID){
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//无返回信息
-            getMyMeeting();
+            
+        }
+    });
+    getMyMeeting();
+}
+
+//点击“推荐人员”
+function recommend(){
+    $.ajax( {
+        url:'../CancelMeetingServlet',
+        data:{
+            userID : window.sessionStorage.userIDStatic,
+            beginTime : document.getElementById("beginTime").value,
+            endTime : document.getElementById("endTime").value,
+            duration : document.getElementById("duration").value,
+            content : document.getElementById("content").value
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//无返回信息
+            var c = document.createElement('tr');
+            var contain = '';
+            for(var i=0; i<data.length; i++){
+              var userID = data[i].userID;
+              var username = data[i].username;
+              
+              contain+='<td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />'+username+'</span></div></td>';
+              if(4==(i%5){
+                c.innerHTML=contain;
+                var projectTable = document.getElementById("must-list");
+                projectTable.appendChild(c);
+                projectTable = document.getElementById("rec-list");
+                projectTable.appendChild(c);
+                c = document.createElement('tr');
+                contain = '';
+            }
+            if(0 != data.length){
+                c.innerHTML=contain;
+                var projectTable = document.getElementById("must-list");
+                projectTable.appendChild(c);
+                projectTable = document.getElementById("rec-list");
+                projectTable.appendChild(c);
+            }
+
         }
     });
 }

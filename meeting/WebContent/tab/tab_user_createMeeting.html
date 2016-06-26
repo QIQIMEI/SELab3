@@ -98,6 +98,12 @@ body {
     height: 30px;
     width: 30px;
 }
+
+#must-list > td{
+    height:20;
+    background-color:#FFFFFF;
+}
+
 -->
 </style>
 
@@ -236,11 +242,11 @@ function editButton(ob){
             <!-- <td height="20" bgcolor="#FFFFFF"><div align="center">
               <input type="checkbox" name="checkbox4" value="checkbox" />
             </div></td> -->
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" name=""></span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button>推荐人员</button></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" id="beginTime"></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" id="endTime"></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" id="duration"></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="text" id="content"></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button onclick="recommend()">推荐人员</button></span></div></td>
           </tr>
           <tr>
             <td height="30" bgcolor="#FFFFFF" colspan="5">
@@ -252,14 +258,9 @@ function editButton(ob){
               <span font-size="30">请勾选必须参加会议的人员</span>
             </td>
           </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-          </tr>
-
+          <div id="must-list">
+          
+          </div>
           <tr>
             <td height="30" bgcolor="#FFFFFF" colspan="5">
               <span font-size="30">&nbsp</span>
@@ -270,14 +271,9 @@ function editButton(ob){
               <span font-size="30">请勾选推荐参加会议的人员</span>
             </td>
           </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />傻屌徐</span></div></td>
-          </tr>
-
+          <div id="rec-list">
+          
+          </div>
            <tr>
             <td height="30" bgcolor="#FFFFFF" colspan="5">
               <span font-size="30">&nbsp</span>
@@ -287,7 +283,7 @@ function editButton(ob){
             <td height="30" bgcolor="#FFFFFF" colspan="4">
               <span font-size="30">点击按钮，系统将根据你的选择为你制定会议</span>
             </td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button>制定会议</button></span></div></td>
+            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button onclick="makeMeeting()">制定会议</button></span></div></td>
           </tr>
           <tr>
             <td height="30" bgcolor="#FFFFFF" colspan="1">
