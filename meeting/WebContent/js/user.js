@@ -1,6 +1,3 @@
-/**
- * Created by Chuanhao on 2015/12/23.
- */
 //提交出差纪录
 function toAddRecord(){
     var missionID = document.getElementById("thisMissionID").value;
@@ -191,9 +188,6 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
     var projectTable = document.getElementById("queryProjectTable");
     projectTable.appendChild(content);
 }
-/**
- * Created by Chuanhao on 2015/12/23.
- */
 //提交出差纪录
 function toAddRecord(){
     var missionID = document.getElementById("thisMissionID").value;
@@ -407,6 +401,8 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
 
 //登录按钮点击后调用函数
 function login(){
+	var username = $("#username").val();
+	var username = $("#password").val();
     $.ajax( {
         url:'/login',
         data:{
