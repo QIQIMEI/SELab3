@@ -402,7 +402,8 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
 //登录按钮点击后调用函数
 function login(){
 	var username = $("#username").val();
-	var username = $("#password").val();
+	var password = $("#password").val();
+    console.log(username+password);
     $.ajax( {
         url:'/login',
         data:{
@@ -412,7 +413,7 @@ function login(){
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//返回JSONObject包括userID、username
-
+            console.log(data);
         }
     });
 }
