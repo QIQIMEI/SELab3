@@ -481,16 +481,35 @@ function toAddQuerySchedule(meetingID,beginTime,place,c){
 //查看用户通知
 function getNotice(){
     $.ajax( {
-        url:'/GetNoticeServlet',
+        url:'../GetNoticeServlet',
         data:{
-        	userID : userID
+        	userID : window.sessionStorage.userIDStatic
         },
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//返回一个JSONArray，每个对象包括noticeID,content,noticeType,noticeTime
+            for(var i=0; i<data.length; i++){
+              var noticeID = data[i].noticeID;
+              var noticeTime = data[i].noticeTime;
+              var noticeType = data[i].noticeType;
+              var content = data[i].content;
+              toAddQueryNotice(noticeID,noticeTime,noticeType,content);
+          }
 
         }
     });
+}
+
+function toAddQueryNotice(noticeID,noticeTime,noticeType,c){
+  var content = document.createElement('tr');
+  var contain = "";
+  contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+noticeID+
+  '</div></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+noticeType+
+  '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+c+
+  '</span></div></td><td bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+noticeTime+'</span></div></td>';
+  content.innerHTML=contain;
+  var projectTable = document.getElementById("queryNoticeTable");
+  projectTable.appendChild(content);
 }
 
 //查看用户的会议

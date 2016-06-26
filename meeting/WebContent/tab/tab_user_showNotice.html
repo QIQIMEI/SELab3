@@ -194,7 +194,7 @@ function editButton(ob){
             <td width="46%" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="5%"><div align="center"><img src="images/tb.gif" width="16" height="16" /></div></td>
-                <td width="95%" class="STYLE1"><span class="STYLE3">你当前的位置：</span>[个人管理]-[查看通知]</td>
+                <td width="95%" class="STYLE1"><span class="STYLE3">你当前的位置：</span>[个人管理]-[查看通知]<button onclick="getNotice()">查询通知</button></td>
               </tr>
             </table></td>
             <td width="54%"><table border="0" align="right" cellpadding="0" cellspacing="0">
@@ -209,36 +209,12 @@ function editButton(ob){
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td width="8" background="images/tab_12.gif">&nbsp;</td>
-        <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="b5d6e6" onmouseover="changeto()"  onmouseout="changeback()">
+        <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="b5d6e6" onmouseover="changeto()"  onmouseout="changeback()" id="queryNoticeTable">
           <tr>
             <td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知编号</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知类型</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知内容</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知时间</span></div></td>
-          </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <div align="center">01</div>
-            </div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议安排通知</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">和马云面对面 2007-11-16 15:00:20 会议室1</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2007-11-16 15:00:20</span></div></td>
-          </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <div align="center">02</div>
-            </div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议取消通知</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">和马云面对面 2015-11-16 15:00:20 会议室1</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2015-11-16 15:00:20</span></div></td>
-          </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <div align="center">03</div>
-            </div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会前微信提醒</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">和马云面对面 2015-11-16 15:00:20 会议室1</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2015-11-16 15:00:20 </span></div></td>
           </tr>
         </table></td>
         <td width="8" background="images/tab_15.gif">&nbsp;</td>
