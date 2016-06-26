@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /**
  * Created by Chuanhao on 2015/12/23.
  */
@@ -191,7 +190,6 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
     content.innerHTML=contain;
     var projectTable = document.getElementById("queryProjectTable");
     projectTable.appendChild(content);
-=======
 /**
  * Created by Chuanhao on 2015/12/23.
  */
@@ -384,5 +382,40 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
     content.innerHTML=contain;
     var projectTable = document.getElementById("queryProjectTable");
     projectTable.appendChild(content);
->>>>>>> 87fb6ec7aa9353e3c380a7757251879fa1575297
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//登录按钮点击后调用函数
+function login(){
+    $.ajax( {
+        url:'/login',
+        data:{
+            username : username,
+            password : password
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//返回JSONObject包括userID、username
+
+        }
+    });
 }
