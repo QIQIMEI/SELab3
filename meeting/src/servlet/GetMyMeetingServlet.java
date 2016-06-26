@@ -66,7 +66,7 @@ public class GetMyMeetingServlet extends HttpServlet {
 			}
 			
 			try {
-				jsobj.append(String.valueOf(i), jsoarray);	
+				jsobj.append("type"+String.valueOf(i), jsoarray);	
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
