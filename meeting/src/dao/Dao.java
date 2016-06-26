@@ -211,7 +211,7 @@ public class Dao {
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();		
-			sm.executeUpdate("update meeting set meetingType = '0'");
+			sm.executeUpdate("update meeting set meetingType = 'ÒÑÈ¡Ïû' where meetingID='"+meetingID+"'");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
