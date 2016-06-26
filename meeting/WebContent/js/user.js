@@ -396,33 +396,31 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
 
 
 
-var userIDStatic = 0;
-
-
 //登录按钮点击后调用函数
 function login(){
 	var username = $("#username").val();
 	var password = $("#password").val();
 	
-  $.ajax( {
-      url:'LoginServlet',
-      data:{
-          username : username,
-          password : password
-      },
-      type:'POST',
-      cache:false, dataType:'json',
-      success:function(data) {//返回JSONObject包括userID、username
-          console.log(data);
-          if(data.userID == "error"){
-              alert("用户名或密码错误");
-          }else{
-              userIDStatic = data.userID;
-              window.location.href = "main_user.html?username="+data.username+"";
-              
-          }
-      }
-  });
+$.ajax( {
+    url:'LoginServlet',
+    data:{
+        username : username,
+        password : password
+    },
+    type:'POST',
+    cache:false, dataType:'json',
+    success:function(data) {//返回JSONObject包括userID、username
+        console.log(data);
+        if(data.userID == "error"){
+            alert("用户名或密码错误");
+        }else{
+        	window.sessionStorage.userIDStatic = data.userID;
+        	alert(window.sessionStorage.userIDStatic);
+            window.location.href = "main_user.html?username="+data.username+"";
+            
+        }
+    }
+});
 }
 
 function a(){
@@ -436,11 +434,8 @@ function a(){
 
 function b(){
 	var url = location.href;
-	console.log(url);
 	var tmp = url.split("?")[1];
-	console.log(tmp);
 	var username = tmp.split("=")[1];
-	console.log(username);
 	var content = document.createElement('div');
     var contain = '<div align="center" class="STYLE1">当前用户：'+username+'</div>';
     content.innerHTML = contain;
@@ -450,36 +445,37 @@ function b(){
 
 //查看用户日程
 function getSchedule(){
+	alert(window.sessionStorage.userIDStatic);
     $.ajax( {
-        url:'/GetScheduleServlet',
-        data:{
-        	userID : userIDStatic
-        },
-        type:'post',
-        cache:false, dataType:'json',
-        success:function(data) {//返回一个JSONArray，每个对象包括meetingID,beginTime,place,content,duration,meetingType
-            for(var i=0; i<data.length; i++){
-                var meetingID = data[i].meetingID;
-                var beginTime = data[i].beginTime;
-                var place = data[i].place;
-                var content = data[i].content;
-                toAddQuerySchedule(meetingID,beginTime,place,content);
-            }
-        }
+      url:'../GetScheduleServlet',
+      data:{
+      	userID : window.sessionStorage.userIDStatic
+      },
+      type:'POST',
+      cache:false, dataType:'json',
+      success:function(data) {//返回一个JSONArray，每个对象包括meetingID,beginTime,place,content,duration,meetingType
+          for(var i=0; i<data.length; i++){
+              var meetingID = data[i].meetingID;
+              var beginTime = data[i].beginTime;
+              var place = data[i].place;
+              var content = data[i].content;
+              toAddQuerySchedule(meetingID,beginTime,place,content);
+          }
+      }
     });
-    userShowSchedule();
+    
 }
 
-function toAddQuerySchedule(meetingID,beginTime,place,content){
-    var content = document.createElement('tr');
-    var contain = "";
-    contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
-    '</div></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+content+
-    '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+beginTime+
-    '</span></div></td><td bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+place+'</span></div></td>';
-    content.innerHTML=contain;
-    var projectTable = document.getElementById("queryScheduleTable");
-    projectTable.appendChild(content);
+function toAddQuerySchedule(meetingID,beginTime,place,c){
+  var content = document.createElement('tr');
+  var contain = "";
+  contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
+  '</div></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+c+
+  '</span></div></td><td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+beginTime+
+  '</span></div></td><td bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">'+place+'</span></div></td>';
+  content.innerHTML=contain;
+  var projectTable = document.getElementById("queryScheduleTable");
+  projectTable.appendChild(content);
 }
 
 //查看用户通知

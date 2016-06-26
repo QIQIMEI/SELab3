@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<script src="../js/user.js" charset="utf-8"></script>
 <meta charset="UTF-8">
 <title>查看个人日程</title>
 <style type="text/css">
@@ -194,7 +195,7 @@ function editButton(ob){
             <td width="46%" valign="middle"><table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="5%"><div align="center"><img src="images/tb.gif" width="16" height="16" /></div></td>
-                <td width="95%" class="STYLE1"><span class="STYLE3">你当前的位置：</span>[个人管理]-[查看日程]</td>
+                <td width="95%" class="STYLE1"><span class="STYLE3">你当前的位置：</span>[个人管理]-[查看日程]<button onclick="getSchedule()">查询日程</button></td>
               </tr>
             </table></td>
             <td width="54%"><table border="0" align="right" cellpadding="0" cellspacing="0">
@@ -217,30 +218,7 @@ function editButton(ob){
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">时间</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">地点</span></div></td>
           </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <div align="center">01</div>
-            </div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">需求会议</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-06-16 15:00:20 </span></div></td>
-            <td bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议室1</span></div></td>
-          </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <div align="center">02</div>
-            </div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">分工会议</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-06-20 15:00:20 </span></div></td>
-            <td bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议室2</span></div></td>
-          </tr>
-          <tr>
-            <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1">
-              <div align="center">03</div>
-            </div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">傻儿子和傻小弟</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-06-26 15:00:20 </span></div></td>
-            <td bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">4号楼706</span></div></td>
-          </tr>
+          
         </table></td>
         <td width="8" background="images/tab_15.gif">&nbsp;</td>
       </tr>
