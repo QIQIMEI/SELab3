@@ -403,19 +403,48 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
 function login(){
 	var username = $("#username").val();
 	var password = $("#password").val();
-    console.log(username+password);
-    $.ajax( {
-        url:'/LoginServlet',
-        data:{
-            username : username,
-            password : password
-        },
-        type:'post',
-        cache:false, dataType:'json',
-        success:function(data) {//返回JSONObject包括userID、username
-            console.log(data);
-        }
-    });
+	
+  $.ajax( {
+      url:'LoginServlet',
+      data:{
+          username : username,
+          password : password
+      },
+      type:'POST',
+      cache:false, dataType:'json',
+      success:function(data) {//返回JSONObject包括userID、username
+          console.log(data);
+          if(data.userID == "error"){
+              alert("用户名或密码错误");
+          }else{
+              window.location.href = "main_user.html?username="+data.username+"";
+              
+          }
+      }
+  });
+}
+
+function a(){
+	var url = location.href;
+	//console.log(url);
+	var tmp = url.split("?")[1];
+	var username = tmp.split("=")[1];
+	
+	document.getElementById("topFrame").src += username;
+}
+
+function b(){
+	var url = location.href;
+	console.log(url);
+	var tmp = url.split("?")[1];
+	console.log(tmp);
+	var username = tmp.split("=")[1];
+	console.log(username);
+	var content = document.createElement('div');
+    var contain = '<div align="center" class="STYLE1">当前用户：'+username+'</div>';
+    content.innerHTML = contain;
+    var projectTable = document.getElementById("user-show");
+    projectTable.appendChild(content);
 }
 
 //查看用户日程

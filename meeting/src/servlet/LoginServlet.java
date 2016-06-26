@@ -44,6 +44,7 @@ public class LoginServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		//»ñÈ¡Êý¾Ý
 		System.out.println("123123123");
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		System.out.println(username);
@@ -51,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 		User user = null;
 		user = dao.login(username, password);
 		
-		//·µ»ØÊý¾Ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		response.setContentType("application/json; charset=utf-8"); 
 		PrintWriter out = null;
 		try {
@@ -67,7 +68,16 @@ public class LoginServlet extends HttpServlet {
 				} 
 				out.append(jsobj.toString());
 			} else {
-				out.append("ÓÃ»§Ãû»òÃÜÂë´íÎó");
+				JSONObject jsobj = new JSONObject();
+				try {
+					jsobj.append("userID", "error");
+				    jsobj.append("username", "error");
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+				out.append(jsobj.toString());
+				
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
