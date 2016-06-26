@@ -430,7 +430,22 @@ function getSchedule(){
         },
         type:'post',
         cache:false, dataType:'json',
-        success:function(data) {//返回一个JSONArray，每个对象包括meetingID,beginTime,place,content,duration
+        success:function(data) {//返回一个JSONArray，每个对象包括meetingID,beginTime,place,content,duration,meetingType
+
+        }
+    });
+}
+
+//查看用户通知
+function getNotice(){
+    $.ajax( {
+        url:'/GetNoticeServlet',
+        data:{
+        	userID : userID
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//返回一个JSONArray，每个对象包括noticeID,content,noticeType,noticeTime
 
         }
     });
@@ -445,7 +460,38 @@ function getMyMeeting(){
         },
         type:'post',
         cache:false, dataType:'json',
-        success:function(data) {//返回一个JSONObject，2代表用户发起的会议列表，1代表用户必须参加的会议列表，0代表用户不必须参加的会议列表，每个会议包括meetingID,beginTime,place,content,duration
+        success:function(data) {//返回一个JSONObject，2代表用户发起的会议列表，1代表用户参加的会议列表，0代表用户未参加的会议列表，每个会议包括meetingID,beginTime,place,content,duration,meetingType(会议状态0：已取消；1：未推送；2：已推送)
+
+        }
+    });
+}
+
+//点击“我发起的会议”中“取消会议”按钮
+function cancelMeeting(){
+    $.ajax( {
+        url:'/CancelMeetingServlet',
+        data:{
+        	meetingID : meetingID
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//无返回信息
+
+        }
+    });
+}
+
+//点击“推荐我参与的会议”中“参加会议”按钮
+function attendMeeting(){
+    $.ajax( {
+        url:'/AttendMeetingServlet',
+        data:{
+        	userID : userID,
+        	meetingID : meetingID
+        },
+        type:'post',
+        cache:false, dataType:'json',
+        success:function(data) {//无返回信息
 
         }
     });

@@ -6,13 +6,15 @@ public class Meeting {
 	private String place;
 	private String content;
 	private int duration;
+	private int meetingType;
 		
-	public Meeting(int meetingID, String beginTime, String place, String content, int duration) {
+	public Meeting(int meetingID, String beginTime, String place, String content, int duration, int meetingType) {
 		this.meetingID = meetingID;
 		this.beginTime = beginTime;
 		this.place = place;
 		this.content = content;
 		this.duration = duration;
+		this.meetingType = meetingType;
 	}
 	
 	public int getMeetingID() {
@@ -48,5 +50,12 @@ public class Meeting {
 	}
 	public int getDuration() {
 		return duration;
+	}	
+	
+	public void setMeetingType(int meetingType) {
+		this.meetingType = meetingType;
+	}
+	public int getMeetingType() {
+		return meetingType;
 	}	
 }

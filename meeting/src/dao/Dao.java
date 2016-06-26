@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import bean.Content;
+import bean.Notice;
 import bean.Scene;
 import bean.User;
 import bean.Meeting;
@@ -147,7 +148,7 @@ public class Dao {
 				String content = results.getString("content"); 
 				int duration = results.getInt("duration"); 
 				int meetingType = results.getInt("meetingType"); 
-				Meeting meeting = new Meeting(meetingID,beginTime,place,content,duration);
+				Meeting meeting = new Meeting(meetingID,beginTime,place,content,duration,meetingType);
 				return meeting;	
 			}
 		} catch (SQLException e) {
@@ -170,6 +171,91 @@ public class Dao {
 		return null;
 	}
 	
+	public ArrayList<Notice> getNotice(int userID) {
+		Connection con = null;
+		Statement sm = null;
+		ResultSet results = null;
+		ArrayList<Notice> noticeList = new ArrayList<Notice>();
+		try {
+			con = DriverManager.getConnection(url, dbUsername, dbPassword);
+			sm = con.createStatement();
+			results = sm.executeQuery("select * from notice where userID='"+userID+"'");
+			while(results.next()){
+				int noticeID = results.getInt("noticeID");
+				String content = results.getString("content");
+				int noticeType = results.getInt("noticeType");
+				String noticeTime = results.getString("noticeTime");
+				Notice notice = new Notice(noticeID, content, noticeType, noticeTime);
+				noticeList.add(notice);
+			}
+			return noticeList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			if(sm != null){		
+			    sm.close();
+			}
+			if(con != null){
+				con.close();	
+			}
+			if(results != null){
+				results.close();
+			}
+		}
+		return null;
+	}
+	
+	public void cancelMeeting(int meetingID) {
+		Connection con = null;
+		Statement sm = null;
+		try {
+			con = DriverManager.getConnection(url, dbUsername, dbPassword);
+			sm = con.createStatement();		
+			sm.executeUpdate("update meeting set meetingType = '0'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				if( sm != null){
+					sm.close();
+				}
+				if(con != null){
+					con.close();	
+				}
+			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
+			
+		}
+	}
+
+	public void attendMeeting(int userID, int meetingID) {
+		Connection con = null;
+		Statement sm = null;
+		try {
+			con = DriverManager.getConnection(url, dbUsername, dbPassword);
+			sm = con.createStatement();		
+			sm.executeUpdate("update attendence set level = '1' where meetingID='"+meetingID+"' and userID='"+userID+"'");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				if( sm != null){
+					sm.close();
+				}
+				if(con != null){
+					con.close();	
+				}
+			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
+			
+		}
+	}
 	
 	public void create(String meetingID, String userID) {
 		Connection con = null;
@@ -196,43 +282,7 @@ public class Dao {
 			
 		}
 	}
-	
-	public Meeting searchallmeeting(String userID){
-		Connection con = null;
-		Statement sm = null;
-		ResultSet results = null;
-		try {
-			con = DriverManager.getConnection(url, dbUsername, dbPassword);
-			sm = con.createStatement();
-			results = sm.executeQuery("select * from attendence where attendence.userID='"+userID+"'");
-			Meeting  meeting = new Meeting();
-			//怎么开对象数组来着。。
-			if(results.next()){
-				meeting.setmeetingID(results.getInt("meetingID"));
-			}
-			return meeting;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			try {
-				if( sm != null){
-					sm.close();
-				}
-				if(con != null){
-					con.close();	
-				}
-				if(results != null){
-					results.close();
-				}
-			} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-			}
-			
-		}
-		return null;
-	  }
+
 
     public Meeting getInfo(String meetingID){
 	Connection con = null;
