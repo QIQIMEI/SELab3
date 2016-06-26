@@ -403,14 +403,13 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
 function login(){
 	var username = $("#username").val();
 	var password = $("#password").val();
-    console.log(username+password);
     $.ajax( {
-        url:'/login',
+        url:'LoginServlet',
         data:{
             username : username,
             password : password
         },
-        type:'post',
+        type:'POST',
         cache:false, dataType:'json',
         success:function(data) {//返回JSONObject包括userID、username
             console.log(data);

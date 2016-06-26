@@ -20,7 +20,7 @@ import dao.Dao;
  * @param <HttpServletRequest>
  * @param <HttpServletResponse>
  */
-@WebServlet("/login")
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		//»ñÈ¡Êý¾Ý
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 		User user = null;
 		user = dao.login(username, password);
 		
-		//·µ»ØÊý¾Ý
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		response.setContentType("application/json; charset=utf-8"); 
 		PrintWriter out = null;
 		try {
@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
 				} 
 				out.append(jsobj.toString());
 			} else {
-				out.append("ÓÃ»§Ãû»òÃÜÂë´íÎó");
+				out.append("ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
