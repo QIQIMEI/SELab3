@@ -6,9 +6,9 @@ public class Meeting {
 	private String place;
 	private String content;
 	private int duration;
-	private int meetingType;
+	private String meetingType;
 		
-	public Meeting(int meetingID, String beginTime, String place, String content, int duration, int meetingType) {
+	public Meeting(int meetingID, String beginTime, String place, String content, int duration, String meetingType) {
 		this.meetingID = meetingID;
 		this.beginTime = beginTime;
 		this.place = place;
@@ -52,10 +52,10 @@ public class Meeting {
 		return duration;
 	}	
 	
-	public void setMeetingType(int meetingType) {
+	public void setMeetingType(String meetingType) {
 		this.meetingType = meetingType;
 	}
-	public int getMeetingType() {
+	public String getMeetingType() {
 		return meetingType;
 	}	
 }

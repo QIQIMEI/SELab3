@@ -42,11 +42,11 @@ public class AttendMeetingServlet extends HttpServlet {
 		String userID = request.getParameter("userID");
 		//获取要参加的会议的ID
 		String meetingID = request.getParameter("meetingID");
-		int temp1 = Integer.parseInt(userID);
-		int temp2 = Integer.parseInt(meetingID);
 		
+		int temp = Integer.parseInt(userID);
+		int temp1 = Integer.parseInt(meetingID);
 		Dao dao = Dao.getInstance();
-		dao.attendMeeting(temp1,temp2);
+		dao.attendMeeting(temp,temp1);
 	}
 
 }

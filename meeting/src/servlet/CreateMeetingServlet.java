@@ -11,23 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import bean.Meeting;
+import bean.User;
 import dao.Dao;
 
 /**
- * Servlet implementation class GetMyMeetingServlet
+ * Servlet implementation class CreateMeetingServlet
  */
-@WebServlet("/GetMyMeetingServlet")
-public class GetMyMeetingServlet extends HttpServlet {
+@WebServlet("/CreateMeetingServlet")
+public class CreateMeetingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetMyMeetingServlet() {
+    public CreateMeetingServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,42 +42,38 @@ public class GetMyMeetingServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-        request.setCharacterEncoding("utf-8");
-		//获取用户的ID
+		request.setCharacterEncoding("utf-8");
+		//获取用户ID
 		String userID = request.getParameter("userID");
 		int temp = Integer.parseInt(userID);
-		System.out.println(userID);
-		JSONObject jsobj = new JSONObject();
-	    
-	    for (int i = 0; i <= 2; i++) {
-	    	ArrayList<Meeting> meetingList = null;
-			
-			Dao dao = Dao.getInstance();
-			meetingList = dao.getSchedule(temp,i);
-			
-			JSONArray jsoarray = new JSONArray();
-			int index = 0;
-			for (int j=0;j < meetingList.size();j++) {
-				JSONObject jsobjt = new JSONObject(meetingList.get(j));
-				jsoarray.put(index, jsobjt);
-				index++;
-			}
-			
-			try {
-				jsobj.append("type"+String.valueOf(i), jsoarray);	
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} 
-	    }
+		//获取要参加的会议的ID
+		String duration=request.getParameter("duration");
+		int temp1 = Integer.parseInt(duration);
+		String content=request.getParameter("content");
+		String beginTime=request.getParameter("beginTime");	
+		String endTime=request.getParameter("endTime");
 		
-	    System.out.println(jsobj);
+		int x=(int)(Math.random()*100);
+		String place = "会议室" + x;
+		Dao dao = Dao.getInstance();
+		dao.create(beginTime,temp1,content,place,"已推送",temp,endTime);	
+		ArrayList<User> userList = null;
+		userList = dao.askfree(beginTime,endTime);
+
+		JSONArray jsoarray = new JSONArray();
+		int index = 0;
+		for (int i=0;i<userList.size()-1;i++) {
+			JSONObject jsobjt = new JSONObject(userList.get(i));
+			jsoarray.put(index, jsobjt);
+			index++;
+		}	
+		
 		response.setContentType("application/json; charset=utf-8"); 
 		PrintWriter out = null;
+		JSONObject jsobj = new JSONObject();
 		try {
 			out = response.getWriter();
-			out.append(jsobj.toString());
+			out.append(jsoarray.toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -87,6 +82,7 @@ public class GetMyMeetingServlet extends HttpServlet {
 				out.close();
 			}
 		}
-	}
-
+		}
 }
+
+

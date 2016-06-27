@@ -3,10 +3,10 @@ package bean;
 public class Notice {
 	private int noticeID;
 	private String content;
-	private int noticeType;
+	private String noticeType;
 	private String noticeTime;
 		
-	public Notice(int noticeID, String content, int noticeType, String noticeTime) {
+	public Notice(int noticeID, String content, String noticeType, String noticeTime) {
 		this.noticeID = noticeID;
 		this.content = content;
 		this.noticeType = noticeType;
@@ -27,10 +27,10 @@ public class Notice {
 		return content;
 	}
 	
-	public void setNoticeType(int noticeType) {
+	public void setNoticeType(String noticeType) {
 		this.noticeType = noticeType;
 	}
-	public int getNoticeType() {
+	public String getNoticeType() {
 		return noticeType;
 	}	
 	

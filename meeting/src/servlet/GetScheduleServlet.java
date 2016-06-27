@@ -2,7 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import bean.Meeting;
@@ -46,6 +44,7 @@ public class GetScheduleServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         request.setCharacterEncoding("utf-8");
+		
 		//获取用户的ID
 		String userID = request.getParameter("userID");
 		int temp = Integer.parseInt(userID);
@@ -54,7 +53,6 @@ public class GetScheduleServlet extends HttpServlet {
 		
 		Dao dao = Dao.getInstance();
 		meetingList = dao.getSchedule(temp,level);
-		
 		JSONArray jsoarray = new JSONArray();
 		int index = 0;
 		for (int i=0;i < meetingList.size();i++) {
@@ -62,7 +60,7 @@ public class GetScheduleServlet extends HttpServlet {
 			jsoarray.put(index, jsobjt);
 			index++;
 		}
-		
+		System.out.println(jsoarray.toString());
 		response.setContentType("application/json; charset=utf-8"); 
 		PrintWriter out = null;
 		try {

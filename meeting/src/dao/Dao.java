@@ -1,19 +1,23 @@
 package dao;
+
+import java.util.Date; 
+import java.util.Calendar; 
+
+import java.text.SimpleDateFormat; 
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import bean.Content;
 import bean.Notice;
-import bean.Scene;
 import bean.User;
 import bean.Meeting;
 
 public class Dao {
+	private int maxID=0;
+	private String finalPlace = null;
 	private static String driver = "com.mysql.jdbc.Driver";
 	String url = "jdbc:mysql://127.0.0.1:3306/meetingbase?useUnicode=true&amp;characterEncoding=UTF-8&amp;";
 	
@@ -59,7 +63,7 @@ public class Dao {
 			if(results.next()){
 				String oldPassword = results.getString("password");
 				if(oldPassword.equals(password)){
-					User user = new User();
+					User user = new User(results.getInt("userID"),username);
 					user.setUserID(results.getInt("userID"));
 					user.setUsername(username);
 					return user;
@@ -92,6 +96,7 @@ public class Dao {
 	}
 
 	public ArrayList<Meeting> getSchedule(int userID, int level) {
+		System.out.println(level);
 		Connection con = null;
 		Statement sm = null;
 		ResultSet results = null;
@@ -99,8 +104,8 @@ public class Dao {
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();
-			if (level == 2) {
-				results = sm.executeQuery("select * from createmeeting where userID='"+userID+"'");
+			if (level == 0) {
+				results = sm.executeQuery("select * from meeting where userID='"+userID+"'");
 				while(results.next()){
 					int meetingID = results.getInt("meetingID");
 					Meeting meeting = getMeeting(meetingID);
@@ -113,7 +118,8 @@ public class Dao {
 				while(results.next()){
 					int meetingID = results.getInt("meetingID");
 					Meeting meeting = getMeeting(meetingID);
-					if (meeting != null) 
+					String meetingType = meeting.getMeetingType();
+					if (meeting != null && !meetingType.equals("已取消")) 
 				    	meetingList.add(meeting);
 				}
 				return meetingList;
@@ -121,14 +127,18 @@ public class Dao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			if(sm != null){		
-			    sm.close();
-			}
-			if(con != null){
-				con.close();	
-			}
-			if(results != null){
-				results.close();
+			try {
+				if( sm != null){
+					sm.close();
+				}
+				if(con != null){
+					con.close();	
+				}
+				if(results != null){
+					results.close();
+				}
+			} catch (SQLException e) {
+					e.printStackTrace();
 			}
 		}
 		return null;
@@ -144,10 +154,11 @@ public class Dao {
 			results = sm.executeQuery("select * from meeting where meetingID='"+meetingID+"'");
 			if(results.next()){
 				String beginTime = results.getString("beginTime");
+				System.out.println(beginTime);
 				String place = results.getString("place"); 
 				String content = results.getString("content"); 
 				int duration = results.getInt("duration"); 
-				int meetingType = results.getInt("meetingType"); 
+				String meetingType = results.getString("meetingType"); 
 				Meeting meeting = new Meeting(meetingID,beginTime,place,content,duration,meetingType);
 				return meeting;	
 			}
@@ -183,7 +194,7 @@ public class Dao {
 			while(results.next()){
 				int noticeID = results.getInt("noticeID");
 				String content = results.getString("content");
-				int noticeType = results.getInt("noticeType");
+				String noticeType = results.getString("noticeType");
 				String noticeTime = results.getString("noticeTime");
 				Notice notice = new Notice(noticeID, content, noticeType, noticeTime);
 				noticeList.add(notice);
@@ -192,15 +203,19 @@ public class Dao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			if(sm != null){		
-			    sm.close();
-			}
-			if(con != null){
-				con.close();	
-			}
-			if(results != null){
-				results.close();
-			}
+			try {
+				if(sm != null){		
+				    sm.close();
+				}
+				if(con != null){
+					con.close();	
+				}
+				if(results != null){
+					results.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+		    }
 		}
 		return null;
 	}
@@ -208,10 +223,23 @@ public class Dao {
 	public void cancelMeeting(int meetingID) {
 		Connection con = null;
 		Statement sm = null;
+		Statement sm2 = null;
+		ResultSet results = null;
+		Date now = new Date(); 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//可以方便地修改日期格式
+		String noticeTime = dateFormat.format(now); 
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
-			sm = con.createStatement();		
+			sm = con.createStatement();
+			sm2 = con.createStatement();
 			sm.executeUpdate("update meeting set meetingType = '已取消' where meetingID='"+meetingID+"'");
+			results = sm.executeQuery("select * from attendence where meetingID='"+meetingID+"' and level='1'");
+			while(results.next()){
+				int userID = results.getInt("userID");
+				Meeting meeting = getMeeting(meetingID);
+				String content = meeting.getContent();
+				sm2.executeUpdate("insert into notice(userID,content,noticeType,noticeTime) values('"+userID+"', '"+content+"','会议取消通知','"+noticeTime+"')");		   
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -257,13 +285,22 @@ public class Dao {
 		}
 	}
 	
-	public void create(String meetingID, String userID) {
+	public void create(String beginTime,int duration,String content,String place,String meetingType,int userID,String endTime) {
 		Connection con = null;
 		Statement sm = null;
+		ResultSet results = null;
+		finalPlace = place;
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();		
-			sm.executeUpdate("insert into createmeeting(meetingID, userID) values('"+meetingID+"', '"+userID+"')");
+			sm.executeUpdate("insert into meeting(userID,beginTime,duration,place,content,meetingType,endTime) values('"+userID+"','"+beginTime+"', '"+duration+"','"+place+"','"+content+"','"+meetingType+"','"+endTime+"')");
+			results = sm.executeQuery("select * from meeting");
+			while (results.next())
+			{
+				if (maxID<results.getInt("meetingID"))
+				    maxID = results.getInt("meetingID");
+				System.out.println(maxID);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -281,62 +318,77 @@ public class Dao {
 			}
 			
 		}
-	}
-
-
-    public Meeting getInfo(String meetingID){
-	Connection con = null;
-	Statement sm = null;
-	ResultSet results = null;
-	try {
-		con = DriverManager.getConnection(url, dbUsername, dbPassword);
-		sm = con.createStatement();
-		results = sm.executeQuery("select * from meeting where meeting.meetingID='"+meetingID+"'");
-		Meeting meeting = new Meeting();
-		if(results.next()){
-			meeting.setmeetingID(results.getInt("meetingID"));
-			meeting.setbeginTime(results.getString("beginTime"));
-			meeting.settimeScope(results.getString("timeScope"));
-			meeting.setduration(results.getInt("duration"));
-		}
-		return meeting;
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}finally{
-		try {
-			if( sm != null){
-				sm.close();
-			}
-			if(con != null){
-				con.close();	
-			}
-			if(results != null){
-				results.close();
-			}
-		} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		}
 		
 	}
-	return null;
-  }
-    
-    public User askfree(String timeScope){
+
+	
+	public String addattendence(int userID,int level,String beginTime,String endTime,String content) {
+		Connection con = null;
+		Statement sm = null;
+		Date now = new Date(); 
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//可以方便地修改日期格式
+		String noticeTime = dateFormat.format(now); 
+		try {
+			con = DriverManager.getConnection(url, dbUsername, dbPassword);
+			sm = con.createStatement();		
+			sm.executeUpdate("insert into attendence(meetingID,userID,level,beginTime,endTime) values('"+maxID+"','"+userID+"', '"+level+"','"+beginTime+"','"+endTime+"')");
+		    if (level == 1) {
+		    	sm.executeUpdate("insert into notice(userID,content,noticeType,noticeTime) values('"+userID+"', '"+content+"','会议安排通知','"+noticeTime+"')");		    
+		    }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			try {
+				if( sm != null){
+					sm.close();
+				}
+				if(con != null){
+					con.close();	
+				}
+			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+			}
+			
+		}
+		return finalPlace;
+	}
+	
+	public ArrayList<User> askfree(String beginTime,String endTime){
 		Connection con = null;
 		Statement sm = null;
 		ResultSet results = null;
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();
-			results = sm.executeQuery("select * from attendence where attendence.occupytime='"+userID+"'");
-			User  meeting = new Meeting();
-			//怎么开对象数组来着。。
-			if(results.next()){
-				meeting.setmeetingID(results.getInt("meetingID"));
+			results = sm.executeQuery("select * from user");
+			ArrayList<User> userList = new ArrayList<User>();
+			while(results.next()){
+				int userID = results.getInt("userID");
+				String userName = results.getString("username");
+				User user = new User(userID, userName); 
+				userList.add(user);
 			}
-			return User;
+			results.close();
+			results=null;
+			results=sm.executeQuery("select * from attendence");
+			while (results.next()){
+				String bt=results.getString("beginTime");
+				String et=results.getString("endTime");
+		        int userID=results.getInt("userID");
+		        	if  ((bt.compareTo(endTime)>=0)||(et.compareTo(beginTime)<=0))
+		        	continue;
+		        	else
+		        	{
+		        	  for (int i=0;i<=userList.size()-1;i++)
+		        	  {
+		        		if (userList.get(i).getUserID()==userID)
+		        		 userList.remove(i);
+		        	  }
+		        	}
+		        }
+		return userList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -359,33 +411,7 @@ public class Dao {
 		}
 		return null;
 	  }
-   
-    public void addattendence(String meetingID,String userID,int level,String duration){
-		Connection con = null;
-		Statement sm = null;
-		ResultSet results = null;
-		try {
-			con = DriverManager.getConnection(url, dbUsername, dbPassword);
-			sm.executeUpdate("insert into attendence(meetingID, userID,level,duration) values('"+meetingID+"', '"+userID+"','"+level+"','"+duration+"')");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			try {
-				if( sm != null){
-					sm.close();
-				}
-				if(con != null){
-					con.close();	
-				}
-				if(results != null){
-					results.close();
-				}
-			} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-			}
-			
-		}
-	  }
+
+
+
 }

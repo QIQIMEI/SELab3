@@ -396,6 +396,10 @@ function toAddQueryProject(projectID,projectName,projectDescription,managerID){
 
 
 
+
+
+
+
 //登录按钮点击后调用函数
 function login(){
 	var username = $("#username").val();
@@ -410,12 +414,11 @@ $.ajax( {
     type:'POST',
     cache:false, dataType:'json',
     success:function(data) {//返回JSONObject包括userID、username
-        console.log(data);
         if(data.userID == "error"){
             alert("用户名或密码错误");
         }else{
         	window.sessionStorage.userIDStatic = data.userID;
-        	alert(window.sessionStorage.userIDStatic);
+        	window.sessionStorage.userNameStatic = data.username;
             window.location.href = "main_user.html?username="+data.username+"";
             
         }
@@ -437,7 +440,7 @@ function b(){
 	var tmp = url.split("?")[1];
 	var username = tmp.split("=")[1];
 	var content = document.createElement('div');
-    var contain = '<div align="center" class="STYLE1">当前用户：'+username+'</div>';
+    var contain = '<div align="center" class="STYLE1">当前用户：'+window.sessionStorage.userNameStatic+'</div>';
     content.innerHTML = contain;
     var projectTable = document.getElementById("user-show");
     projectTable.appendChild(content);
@@ -445,7 +448,6 @@ function b(){
 
 //查看用户日程
 function getSchedule(){
-	alert(window.sessionStorage.userIDStatic);
     $.ajax( {
       url:'../GetScheduleServlet',
       data:{
@@ -454,7 +456,14 @@ function getSchedule(){
       type:'POST',
       cache:false, dataType:'json',
       success:function(data) {//返回一个JSONArray，每个对象包括meetingID,beginTime,place,content,duration,meetingType
-          for(var i=0; i<data.length; i++){
+    	  var projectTable = document.getElementById("queryScheduleTable");
+    	  projectTable.innerHTML='<tr>'+
+              '<td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">日程编号</span></div></td>'+
+              '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">内容</span></div></td>'+
+              '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">时间</span></div></td>'+
+              '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">地点</span></div></td>'+
+            '</tr>';
+    	  for(var i=0; i<data.length; i++){
               var meetingID = data[i].meetingID;
               var beginTime = data[i].beginTime;
               var place = data[i].place;
@@ -488,13 +497,20 @@ function getNotice(){
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//返回一个JSONArray，每个对象包括noticeID,content,noticeType,noticeTime
-            for(var i=0; i<data.length; i++){
+           var projectTable = document.getElementById("queryNoticeTable");
+      	   projectTable.innerHTML='<tr>'+
+            '<td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知编号</span></div></td>' +
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知类型</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知内容</span></div></td>'+
+            '<td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">通知时间</span></div></td>'+
+          '</tr>';
+           for(var i=0; i<data.length; i++){
               var noticeID = data[i].noticeID;
               var noticeTime = data[i].noticeTime;
               var noticeType = data[i].noticeType;
               var content = data[i].content;
               toAddQueryNotice(noticeID,noticeTime,noticeType,content);
-          }
+           }
 
         }
     });
@@ -543,12 +559,12 @@ function getMyMeeting(){
             projectTable.appendChild(c);
 
 
-            for(var j=0; j<data.type2[0].length; j++){
-                var meetingID = data.type2[0][j].meetingID;
-                var beginTime = data.type2[0][j].beginTime;
-                var place = data.type2[0][j].place;
-                var content = data.type2[0][j].content;
-                var meetingType = data.type2[0][j].meetingType;
+            for(var j=0; j<data.type0[0].length; j++){
+                var meetingID = data.type0[0][j].meetingID;
+                var beginTime = data.type0[0][j].beginTime;
+                var place = data.type0[0][j].place;
+                var content = data.type0[0][j].content;
+                var meetingType = data.type0[0][j].meetingType;
                 
                 c = document.createElement('tr');
                 contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
@@ -622,12 +638,12 @@ function getMyMeeting(){
             projectTable = document.getElementById("queryMyMeetingTable");
             projectTable.appendChild(c);
 
-            for(var j=0; j<data.type0[0].length; j++){
-                var meetingID = data.type0[0][j].meetingID;
-                var beginTime = data.type0[0][j].beginTime;
-                var place = data.type0[0][j].place;
-                var content = data.type0[0][j].content;
-                var meetingType = data.type0[0][j].meetingType;
+            for(var j=0; j<data.type2[0].length; j++){
+                var meetingID = data.type2[0][j].meetingID;
+                var beginTime = data.type2[0][j].beginTime;
+                var place = data.type2[0][j].place;
+                var content = data.type2[0][j].content;
+                var meetingType = data.type2[0][j].meetingType;
                 
                 c = document.createElement('tr');
                 contain='<td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE1"><div align="center">'+meetingID+
@@ -645,7 +661,6 @@ function getMyMeeting(){
         }
     });
 }
-
 //点击“我发起的会议”中“取消会议”按钮
 function cancelMeeting(meetingID){
     $.ajax( {
@@ -679,10 +694,13 @@ function attendMeeting(meetingID){
     getMyMeeting();
 }
 
+
+
+
 //点击“推荐人员”
 function recommend(){
     $.ajax( {
-        url:'../CancelMeetingServlet',
+        url:'../CreateMeetingServlet',
         data:{
             userID : window.sessionStorage.userIDStatic,
             beginTime : document.getElementById("beginTime").value,
@@ -693,31 +711,98 @@ function recommend(){
         type:'post',
         cache:false, dataType:'json',
         success:function(data) {//无返回信息
-            var c = document.createElement('tr');
-            var contain = '';
+        	var projectTable = document.getElementById("must-list");
+            projectTable.innerHTML='';
+            var projectTable2 = document.getElementById("rec-list");
+            projectTable2.innerHTML='';
+            var c = document.createElement('div');
+            var d = document.createElement('div');
+            var contain1 = '';
+            var contain2 = '';
             for(var i=0; i<data.length; i++){
               var userID = data[i].userID;
               var username = data[i].username;
               
-              contain+='<td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" />'+username+'</span></div></td>';
-              if(4==(i%5){
-                c.innerHTML=contain;
-                var projectTable = document.getElementById("must-list");
+              contain1+='<div width="20%" height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" onclick="check('+i+','+0+')" id="ch'+i+'-'+0+'"/>'+username+'</span></div></div>';
+              contain2+='<div width="20%" height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1"><input type="checkbox" name="checkbox" value="checkbox" onclick="check('+i+','+1+')" id="ch'+i+'-'+1+'"/>'+username+'</span></div></div>';
+              if(4==(i%5)){
+            	  contain1+='';
+            	  contain2+='';
+            	c.innerHTML=contain1;
+            	d.innerHTML=contain2;
+                projectTable = document.getElementById("must-list");
                 projectTable.appendChild(c);
-                projectTable = document.getElementById("rec-list");
-                projectTable.appendChild(c);
-                c = document.createElement('tr');
-                contain = '';
+                projectTable2 = document.getElementById("rec-list");
+                projectTable2.appendChild(d);
+                c = document.createElement('div');
+                d = document.createElement('div');
+                contain1 = '';
+                contain2 = '';
+              }
             }
             if(0 != data.length){
-                c.innerHTML=contain;
-                var projectTable = document.getElementById("must-list");
+                c.innerHTML=contain1;
+                d.innerHTML=contain2;
+                projectTable = document.getElementById("must-list");
                 projectTable.appendChild(c);
-                projectTable = document.getElementById("rec-list");
-                projectTable.appendChild(c);
+                projectTable2 = document.getElementById("rec-list");
+                projectTable2.appendChild(d);
             }
-
+            
+            //window.sessionStorage.userlist = data;
+            window.sessionStorage.userlist= JSON.stringify(data);
+            //window.sessionStorage.userlist[0] = data[0].userID;
+            //window.sessionStorage.userlist.push({userID: data[0].userID});
+            //window.sessionStorage.userlist[0] = data[0].userID;
+            //console.log("data: " + data[0].userID);
+            //console.log("data2: " + window.sessionStorage.userlist);
+            var arr = JSON.parse(window.sessionStorage.userlist);
+            //console.log("data3: " + arr[0].userID);
+            window.sessionStorage.userlistL = data.length;
         }
     });
 }
 
+function check(i, index){
+	var selfch = document.getElementById("ch"+i+"-"+index);
+	var oppoch = document.getElementById("ch"+i+"-"+((index+1)%2));
+	if(selfch.checked){
+		oppoch.checked = false;
+	}
+}
+
+function makeMeeting(){
+	var userlist = new Array();
+	var userArray = JSON.parse(window.sessionStorage.userlist);
+	//console.log(userArray[2].userID);
+	for(var i = 0; i < window.sessionStorage.userlistL; i++){
+		var tmp = document.getElementById("ch"+i+"-0");
+		if(tmp.checked){
+			userlist.push({userID:userArray[i].userID, level:1});		
+		}
+		tmp = document.getElementById("ch"+i+"-1");
+		if(tmp.checked){
+			userlist.push({userID:userArray[i].userID, level:2});
+		}
+		console.log(userlist);
+	}
+	$.ajax( {
+        url:'../AddAttendenceServlet',
+        data:{
+        	userlist: JSON.stringify(userlist),
+        	//userID :window.sessionStorage.userlist[i].userID,
+        	//level:document.getElementById("ch"+i+"-0").value,
+            beginTime : document.getElementById("beginTime").value,
+            endTime : document.getElementById("endTime").value,
+            duration : document.getElementById("duration").value,
+            content : document.getElementById("content").value
+        },
+        type:'post',
+        cache:false, dataType:'text',
+        success:function(data) {//无返回信息
+            var str = data;
+            console.log(str);
+            document.getElementById("show-result").innerHTML = str;
+        }
+    });
+}

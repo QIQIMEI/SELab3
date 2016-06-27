@@ -43,16 +43,13 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		//»ñÈ¡Êý¾Ý
-		System.out.println("123123123");
-		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		System.out.println(username);
 		Dao dao = Dao.getInstance();
 		User user = null;
 		user = dao.login(username, password);
 		
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//·µ»ØÊý¾Ý
 		response.setContentType("application/json; charset=utf-8"); 
 		PrintWriter out = null;
 		try {
@@ -67,6 +64,7 @@ public class LoginServlet extends HttpServlet {
 					e.printStackTrace();
 				} 
 				out.append(jsobj.toString());
+				
 			} else {
 				JSONObject jsobj = new JSONObject();
 				try {

@@ -99,9 +99,9 @@ body {
     width: 30px;
 }
 
-#must-list > td{
-    height:20;
-    background-color:#FFFFFF;
+td > div > div{
+	float: left;
+	width: 20%;
 }
 
 -->
@@ -111,7 +111,7 @@ body {
 
 
 <script src="../lib/jquery-2.1.3.min.js"></script>
-<script src="../js/user.js"></script>
+<script src="../js/user.js" charset="gb2312"></script>
 <script>
 var  highlightcolor='#c1ebff';
 var  clickcolor='#51b2f6';
@@ -222,22 +222,13 @@ function editButton(ob){
             </td>
           </tr>
           <tr>
-            <td width="12%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">范围起始时间</span></div></td>
-            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">范围结束时间</span></div></td>
+            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">范围起始时间(形如：2016-5-26 13:00:00)</span></div></td>
+            <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">范围结束时间(形如：2016-5-26 13:00:00)</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议持续时间(分钟)</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">会议内容</span></div></td>
             <td width="15%" height="22" background="images/bg.gif" bgcolor="#FFFFFF" class="STYLE1"><div align="center">基本操作</div></td>
           </tr>
-          <tr>
-            <!-- <td height="20" bgcolor="#FFFFFF"><div align="center">
-              <input type="checkbox" name="checkbox4" value="checkbox" />
-            </div></td> -->
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-6-20 15:00:00</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">2016-6-20 22:00:00</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">40</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE1">与马云爸爸面对面</span></div></td>
-            <td height="20" bgcolor="#FFFFFF"><div align="center"><span class="STYLE4"><button>推荐人员</button></span></div></td>
-          </tr>
+          
           <tr>
             <!-- <td height="20" bgcolor="#FFFFFF"><div align="center">
               <input type="checkbox" name="checkbox4" value="checkbox" />
@@ -258,9 +249,9 @@ function editButton(ob){
               <span font-size="30">请勾选必须参加会议的人员</span>
             </td>
           </tr>
-          <div id="must-list">
-          
-          </div>
+          <tr>
+          <td colspan="5" id="must-list"></td>
+          </tr>
           <tr>
             <td height="30" bgcolor="#FFFFFF" colspan="5">
               <span font-size="30">&nbsp</span>
@@ -271,9 +262,9 @@ function editButton(ob){
               <span font-size="30">请勾选推荐参加会议的人员</span>
             </td>
           </tr>
-          <div id="rec-list">
-          
-          </div>
+          <tr>
+          <td colspan="5" id="rec-list"></td>
+          </tr>
            <tr>
             <td height="30" bgcolor="#FFFFFF" colspan="5">
               <span font-size="30">&nbsp</span>
@@ -289,7 +280,7 @@ function editButton(ob){
             <td height="30" bgcolor="#FFFFFF" colspan="1">
               <span font-size="30">会议定制结果：</span>
             </td>
-            <td height="20" bgcolor="#FFFFFF" colspan="4"><div align="center"><span class="STYLE4">会议主题：与马云爸爸面对面 起始时间：2016-06-26 13:00:00 持续时间：40分钟 地点：会议室1 参与人数：13人</span></div></td>
+            <td height="20" bgcolor="#FFFFFF" colspan="4"><div align="center"><span id="show-result" class="STYLE4"></span></div></td>
           </tr>
         </table></td>
         <td width="8" background="images/tab_15.gif">&nbsp;</td>
