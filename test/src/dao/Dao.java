@@ -18,7 +18,7 @@ import bean.Meeting;
 public class Dao {
 	private int maxID=0;
 	private String finalPlace = null;
-	private String driver = "com.mysql.jdbc.Driver";
+	private static String driver = "com.mysql.jdbc.Driver";
 	private String url = "jdbc:mysql://fdu.nxtsysx.net:3306/meetingbase?useUnicode=true&characterEncoding=UTF-8";
 	
 	//your username and password
