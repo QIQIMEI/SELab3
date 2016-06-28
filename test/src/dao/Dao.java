@@ -1,19 +1,13 @@
 package dao;
 
-import java.util.Date; 
-import java.util.Calendar; 
-
-import java.text.SimpleDateFormat; 
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
-
+import bean.Meeting;
 import bean.Notice;
 import bean.User;
-import bean.Meeting;
+
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Dao {
 	private int maxID=0;
