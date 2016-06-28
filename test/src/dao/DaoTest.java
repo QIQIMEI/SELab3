@@ -5,12 +5,7 @@ import bean.User;
 import java.sql.*;
 
 public class DaoTest {
-    private String url = "jdbc:mysql://fdu.nxtsysx.net:3306/meetingbase?useUnicode=true&characterEncoding=UTF-8";
-
-    //your username and password
-    private String dbUsername = "selab3";
-    private String dbPassword = "selab3qqm";
-    private Connection con = null;
+    private Connection con=null;
     private Statement sm = null;
     private ResultSet results = null;
 
@@ -18,13 +13,18 @@ public class DaoTest {
 
     @org.junit.Before
     public void setUp() throws Exception {
-        dao = Dao.getInstance();
+        String url = "jdbc:mysql://fdu.nxtsysx.net:3306/meetingbase?useUnicode=true&characterEncoding=UTF-8";
+        String dbUsername = "selab3";
+        String dbPassword = "selab3qqm";
+
         try {
             con = DriverManager.getConnection(url, dbUsername, dbPassword);
             sm = con.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        dao = Dao.getInstance();
     }
 
     @org.junit.After
@@ -37,7 +37,6 @@ public class DaoTest {
             if(results != null)
                 results.close();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
