@@ -42,14 +42,14 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		//获取数据
+		//鑾峰彇鏁版嵁
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		Dao dao = Dao.getInstance();
 		User user = null;
 		user = dao.login(username, password);
 		
-		//返回数据
+		//杩斿洖鏁版嵁
 		response.setContentType("application/json; charset=utf-8"); 
 		PrintWriter out = null;
 		try {

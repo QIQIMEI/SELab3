@@ -44,7 +44,7 @@ public class GetNoticeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
-		//获取用户的ID
+		//鑾峰彇鐢ㄦ埛鐨処D
 		String userID = request.getParameter("userID");
 		int temp = Integer.parseInt(userID);
 		

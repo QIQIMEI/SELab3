@@ -46,9 +46,9 @@ public class AddAttendenceServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=gb2312");
-		//»ñÈ¡ÓÃ»§ID
+		//è·å–ç”¨æˆ·ID
 		String userList = request.getParameter("userlist");
-		//»ñÈ¡Òª²Î¼ÓµÄ»áÒéµÄID
+		//è·å–è¦å‚åŠ çš„ä¼šè®®çš„ID
 		String beginTime = request.getParameter("beginTime");
 		String endTime = request.getParameter("endTime");
 		String duration=request.getParameter("duration");
@@ -67,13 +67,13 @@ public class AddAttendenceServlet extends HttpServlet {
 	    }		      
 		
 		PrintWriter out=response.getWriter();
-		String info="»áÒéÄÚÈİ:"+content+" ¿ªÊ¼Ê±¼ä:"+beginTime+" ³ÖĞøÊ±¼ä:"+duration+"·ÖÖÓ  µØµã£º"+place+" ÈËÊı:"+ array.length()+"ÈË";
+		String info="ä¼šè®®å†…å®¹:"+content+" å¼€å§‹æ—¶é—´:"+beginTime+" æŒç»­æ—¶é—´:"+duration+"åˆ†é’Ÿ  åœ°ç‚¹ï¼š"+place+" äººæ•°:"+ array.length()+"äºº";
 		out.append(new String(info.getBytes("gb2312")));
 		}
 		else
 		{
 		PrintWriter out=response.getWriter();
-		String info="ÇëÖØĞÂÑ¡ÔñÊ±¼ä»òÕßÈËÔ±";
+		String info="è¯·é‡æ–°é€‰æ‹©æ—¶é—´æˆ–è€…äººå‘˜";
 		out.append(new String(info.getBytes("gb2312")));
 		}
 	}

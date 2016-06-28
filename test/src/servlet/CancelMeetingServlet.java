@@ -38,7 +38,7 @@ public class CancelMeetingServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
-		//获取要取消的会议的ID
+		//鑾峰彇瑕佸彇娑堢殑浼氳鐨処D
 		String meetingID = request.getParameter("meetingID");
 		int temp = Integer.parseInt(meetingID);
 		

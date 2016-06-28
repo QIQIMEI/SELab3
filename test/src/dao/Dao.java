@@ -18,16 +18,16 @@ import bean.Meeting;
 public class Dao {
 	private int maxID=0;
 	private String finalPlace = null;
-	private static String driver = "com.mysql.jdbc.Driver";
-	String url = "jdbc:mysql://127.0.0.1:3306/meetingbase?useUnicode=true&amp;characterEncoding=UTF-8&amp;";
+	private String driver = "com.mysql.jdbc.Driver";
+	private String url = "jdbc:mysql://fdu.nxtsysx.net:3306/meetingbase?useUnicode=true&characterEncoding=UTF-8";
 	
 	//your username and password
-	String dbUsername = "root"; 
-	String dbPassword = "033576";
+	private String dbUsername = "selab3";
+	private String dbPassword = "selab3qqm";
 	
 	private static Dao dao;
 	
-	private Dao(){};
+	private Dao(){}
 	
 	public static Dao getInstance(){
 		if(dao == null){
@@ -119,7 +119,7 @@ public class Dao {
 					int meetingID = results.getInt("meetingID");
 					Meeting meeting = getMeeting(meetingID);
 					String meetingType = meeting.getMeetingType();
-					if (meeting != null && !meetingType.equals("ÒÑÈ¡Ïû")) 
+					if (meeting != null && !meetingType.equals("å·²å–æ¶ˆ")) 
 				    	meetingList.add(meeting);
 				}
 				return meetingList;
@@ -226,19 +226,19 @@ public class Dao {
 		Statement sm2 = null;
 		ResultSet results = null;
 		Date now = new Date(); 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//¿ÉÒÔ·½±ãµØĞŞ¸ÄÈÕÆÚ¸ñÊ½
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//å¯ä»¥æ–¹ä¾¿åœ°ä¿®æ”¹æ—¥æœŸæ ¼å¼
 		String noticeTime = dateFormat.format(now); 
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();
 			sm2 = con.createStatement();
-			sm.executeUpdate("update meeting set meetingType = 'ÒÑÈ¡Ïû' where meetingID='"+meetingID+"'");
+			sm.executeUpdate("update meeting set meetingType = 'å·²å–æ¶ˆ' where meetingID='"+meetingID+"'");
 			results = sm.executeQuery("select * from attendence where meetingID='"+meetingID+"' and level='1'");
 			while(results.next()){
 				int userID = results.getInt("userID");
 				Meeting meeting = getMeeting(meetingID);
 				String content = meeting.getContent();
-				sm2.executeUpdate("insert into notice(userID,content,noticeType,noticeTime) values('"+userID+"', '"+content+"','»áÒéÈ¡ÏûÍ¨Öª','"+noticeTime+"')");		   
+				sm2.executeUpdate("insert into notice(userID,content,noticeType,noticeTime) values('"+userID+"', '"+content+"','ä¼šè®®å–æ¶ˆé€šçŸ¥','"+noticeTime+"')");		   
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -326,14 +326,14 @@ public class Dao {
 		Connection con = null;
 		Statement sm = null;
 		Date now = new Date(); 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//¿ÉÒÔ·½±ãµØĞŞ¸ÄÈÕÆÚ¸ñÊ½
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//å¯ä»¥æ–¹ä¾¿åœ°ä¿®æ”¹æ—¥æœŸæ ¼å¼
 		String noticeTime = dateFormat.format(now); 
 		try {
 			con = DriverManager.getConnection(url, dbUsername, dbPassword);
 			sm = con.createStatement();		
 			sm.executeUpdate("insert into attendence(meetingID,userID,level,beginTime,endTime) values('"+maxID+"','"+userID+"', '"+level+"','"+beginTime+"','"+endTime+"')");
 		    if (level == 1) {
-		    	sm.executeUpdate("insert into notice(userID,content,noticeType,noticeTime) values('"+userID+"', '"+content+"','»áÒé°²ÅÅÍ¨Öª','"+noticeTime+"')");		    
+		    	sm.executeUpdate("insert into notice(userID,content,noticeType,noticeTime) values('"+userID+"', '"+content+"','ä¼šè®®å®‰æ’é€šçŸ¥','"+noticeTime+"')");		    
 		    }
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

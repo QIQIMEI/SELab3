@@ -38,9 +38,9 @@ public class AttendMeetingServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("utf-8");
-		//获取用户ID
+		//鑾峰彇鐢ㄦ埛ID
 		String userID = request.getParameter("userID");
-		//获取要参加的会议的ID
+		//鑾峰彇瑕佸弬鍔犵殑浼氳鐨処D
 		String meetingID = request.getParameter("meetingID");
 		
 		int temp = Integer.parseInt(userID);

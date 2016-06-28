@@ -45,7 +45,7 @@ public class GetScheduleServlet extends HttpServlet {
 		// TODO Auto-generated method stub
         request.setCharacterEncoding("utf-8");
 		
-		//获取用户的ID
+		//鑾峰彇鐢ㄦ埛鐨処D
 		String userID = request.getParameter("userID");
 		int temp = Integer.parseInt(userID);
 	    int level = 1;

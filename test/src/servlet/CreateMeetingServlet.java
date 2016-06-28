@@ -43,10 +43,10 @@ public class CreateMeetingServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
-		//»ñÈ¡ÓÃ»§ID
+		//è·å–ç”¨æˆ·ID
 		String userID = request.getParameter("userID");
 		int temp = Integer.parseInt(userID);
-		//»ñÈ¡Òª²Î¼ÓµÄ»áÒéµÄID
+		//è·å–è¦å‚åŠ çš„ä¼šè®®çš„ID
 		String duration=request.getParameter("duration");
 		int temp1 = Integer.parseInt(duration);
 		String content=request.getParameter("content");
@@ -54,9 +54,9 @@ public class CreateMeetingServlet extends HttpServlet {
 		String endTime=request.getParameter("endTime");
 		
 		int x=(int)(Math.random()*100);
-		String place = "»áÒéÊÒ" + x;
+		String place = "ä¼šè®®å®¤" + x;
 		Dao dao = Dao.getInstance();
-		dao.create(beginTime,temp1,content,place,"ÒÑÍÆËÍ",temp,endTime);	
+		dao.create(beginTime,temp1,content,place,"å·²æ¨é€",temp,endTime);	
 		ArrayList<User> userList = null;
 		userList = dao.askfree(beginTime,endTime);
 
