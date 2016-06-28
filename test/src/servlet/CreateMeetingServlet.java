@@ -62,8 +62,8 @@ public class CreateMeetingServlet extends HttpServlet {
 
 		JSONArray jsoarray = new JSONArray();
 		int index = 0;
-		for (int i=0;i<userList.size()-1;i++) {
-			JSONObject jsobjt = new JSONObject(userList.get(i));
+		for (User anUser : userList) {
+			JSONObject jsobjt = new JSONObject(anUser);
 			jsoarray.put(index, jsobjt);
 			index++;
 		}	
