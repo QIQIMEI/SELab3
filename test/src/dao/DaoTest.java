@@ -10,55 +10,50 @@ public class DaoTest {
     //your username and password
     private String dbUsername = "selab3";
     private String dbPassword = "selab3qqm";
+    private Connection con = null;
+    private Statement sm = null;
+    private ResultSet results = null;
+
+    private Dao dao;
 
     @org.junit.Before
     public void setUp() throws Exception {
-
+        dao = Dao.getInstance();
+        try {
+            con = DriverManager.getConnection(url, dbUsername, dbPassword);
+            sm = con.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @org.junit.After
     public void tearDown() throws Exception {
-
+        try {
+            if(sm != null)
+                sm.close();
+            if(con != null)
+                con.close();
+            if(results != null)
+                results.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @org.junit.Test
     public void login() throws Exception {
         String username="testName1", password="testPass1";
 
-        Dao dao = Dao.getInstance();
-        Connection con = null;
-        Statement sm = null;
-        ResultSet results = null;
-        try {
-            con = DriverManager.getConnection(url, dbUsername, dbPassword);
-            sm = con.createStatement();
-            results = sm.executeQuery("select * from user where user.username='"+username+"'");
-            if(results.next()){
-                String oldPassword = results.getString("password");
-                if(oldPassword.equals(password)){
-                    User user = new User(results.getInt("userID"),username);
-                    user.setUserID(results.getInt("userID"));
-                    user.setUsername(username);
-                    //TODO test here
-                }
-            }
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }finally{
-            try {
-                if( sm != null){
-                    sm.close();
-                }
-                if(con != null){
-                    con.close();
-                }
-                if(results != null){
-                    results.close();
-                }
-            } catch (SQLException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+        results = sm.executeQuery("select * from user where user.username='"+username+"'");
+        if(results.next()){
+            String oldPassword = results.getString("password");
+            if(oldPassword.equals(password)){
+                User user = new User(results.getInt("userID"),username);
+                user.setUserID(results.getInt("userID"));
+                user.setUsername(username);
+                //TODO test here
             }
         }
     }
